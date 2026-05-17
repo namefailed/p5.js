@@ -87,44 +87,48 @@
     </div>
   </div>
   <script>
-    let currentSketchScript = null;
-    
     document.querySelectorAll('.sketch-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const sketchFile = btn.dataset.sketch;
-        const sketchDesc = btn.dataset.desc || '';
-        loadSketch(sketchFile, sketchDesc);
-        
-        // Update active state
-        document.querySelectorAll('.sketch-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        window.location.hash = sketchFile;
+        location.reload();
       });
     });
     
-    function loadSketch(sketchFile, description) {
-      // Remove current sketch if exists
-      if (currentSketchScript) {
-        currentSketchScript.remove();
+    // Load sketch from hash on page load
+    function loadFromHash() {
+      const hashSketch = window.location.hash.substring(1);
+      if (hashSketch) {
+        const btn = document.querySelector(`[data-sketch="${hashSketch}"]`);
+        if (btn) {
+          btn.classList.add('active');
+          loadSketchDirect(hashSketch, btn.dataset.desc);
+        }
+      } else {
+        // Load first sketch
+        const btn = document.querySelector('[data-sketch="bouncing-balls.js"]');
+        if (btn) {
+          btn.classList.add('active');
+          loadSketchDirect('bouncing-balls.js', btn.dataset.desc);
+        }
       }
-      
-      // Remove existing canvas
-      const existingCanvas = document.querySelector('canvas');
-      if (existingCanvas) {
-        existingCanvas.remove();
-      }
-      
-      // Update sketch name and description
+    }
+    
+    function loadSketchDirect(sketchFile, description) {
       document.getElementById('current-sketch-name').textContent = sketchFile.replace('.js', '').replace(/-/g, ' ');
       document.getElementById('current-sketch-desc').textContent = description || '';
       
-      // Load new sketch
-      currentSketchScript = document.createElement('script');
-      currentSketchScript.src = sketchFile;
-      document.getElementById('sketch-container').appendChild(currentSketchScript);
+      const script = document.createElement('script');
+      script.src = sketchFile;
+      document.getElementById('sketch-container').appendChild(script);
     }
     
-    // Set first sketch as active
-    document.querySelector('[data-sketch="bouncing-balls.js"]').classList.add('active');
+    // Run immediately if DOM is loaded, otherwise wait
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadFromHash);
+    } else {
+      loadFromHash();
+    }
   </script>
 </body>
 
