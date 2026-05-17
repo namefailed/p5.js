@@ -87,48 +87,75 @@
     </div>
   </div>
   <script>
+    let currentP5Instance = null;
+    
     document.querySelectorAll('.sketch-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const sketchFile = btn.dataset.sketch;
-        window.location.hash = sketchFile;
-        location.reload();
+        const sketchDesc = btn.dataset.desc || '';
+        loadSketch(sketchFile, sketchDesc);
+        
+        document.querySelectorAll('.sketch-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
       });
     });
     
-    // Load sketch from hash on page load
-    function loadFromHash() {
-      const hashSketch = window.location.hash.substring(1);
-      if (hashSketch) {
-        const btn = document.querySelector(`[data-sketch="${hashSketch}"]`);
-        if (btn) {
-          btn.classList.add('active');
-          loadSketchDirect(hashSketch, btn.dataset.desc);
-        }
-      } else {
-        // Load first sketch
-        const btn = document.querySelector('[data-sketch="bouncing-balls.js"]');
-        if (btn) {
-          btn.classList.add('active');
-          loadSketchDirect('bouncing-balls.js', btn.dataset.desc);
-        }
+    function loadSketch(sketchFile, description) {
+      // Remove existing p5 instance
+      if (currentP5Instance) {
+        currentP5Instance.remove();
+        currentP5Instance = null;
       }
-    }
-    
-    function loadSketchDirect(sketchFile, description) {
+      
+      // Remove existing canvas
+      const existingCanvas = document.querySelector('canvas');
+      if (existingCanvas) {
+        existingCanvas.remove();
+      }
+      
+      // Update UI
       document.getElementById('current-sketch-name').textContent = sketchFile.replace('.js', '').replace(/-/g, ' ');
       document.getElementById('current-sketch-desc').textContent = description || '';
       
-      const script = document.createElement('script');
-      script.src = sketchFile;
-      document.getElementById('sketch-container').appendChild(script);
+      // Load and execute sketch in instance mode
+      fetch(sketchFile)
+        .then(response => response.text())
+        .then(code => {
+          // Clean up global p5 functions
+          if (typeof window.setup !== 'undefined') delete window.setup;
+          if (typeof window.draw !== 'undefined') delete window.draw;
+          if (typeof window.windowResized !== 'undefined') delete window.windowResized;
+          if (typeof window.keyPressed !== 'undefined') delete window.keyPressed;
+          if (typeof window.mousePressed !== 'undefined') delete window.mousePressed;
+          if (typeof window.mouseMoved !== 'undefined') delete window.mouseMoved;
+          if (typeof window.mouseWheel !== 'undefined') delete window.mouseWheel;
+          
+          // Execute the sketch code (defines global functions)
+          eval(code);
+          
+          // Create new p5 instance with the global functions
+          currentP5Instance = new p5((p) => {
+            if (typeof window.setup === 'function') {
+              const originalSetup = window.setup;
+              p.setup = () => {
+                p.createCanvas(p.windowWidth, p.windowHeight);
+                originalSetup();
+              };
+            }
+            if (typeof window.draw === 'function') p.draw = window.draw;
+            if (typeof window.windowResized === 'function') p.windowResized = window.windowResized;
+            if (typeof window.keyPressed === 'function') p.keyPressed = window.keyPressed;
+            if (typeof window.mousePressed === 'function') p.mousePressed = window.mousePressed;
+            if (typeof window.mouseMoved === 'function') p.mouseMoved = window.mouseMoved;
+            if (typeof window.mouseWheel === 'function') p.mouseWheel = window.mouseWheel;
+          }, document.getElementById('sketch-container'));
+        })
+        .catch(err => console.error('Error loading sketch:', err));
     }
     
-    // Run immediately if DOM is loaded, otherwise wait
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadFromHash);
-    } else {
-      loadFromHash();
-    }
+    // Load first sketch on page load
+    document.querySelector('[data-sketch="bouncing-balls.js"]').classList.add('active');
+    loadSketch('bouncing-balls.js', document.querySelector('[data-sketch="bouncing-balls.js"]').dataset.desc);
   </script>
 </body>
 
