@@ -3,12 +3,14 @@
 let brushSize = 20;
 let brushColor;
 let previousMouseX, previousMouseY;
+let hue = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255);
   brushColor = color(0);
   colorMode(HSB);
+  hue = 0;
 }
 
 function draw() {
@@ -16,6 +18,7 @@ function draw() {
     stroke(brushColor);
     strokeWeight(brushSize);
     strokeCap(ROUND);
+    strokeJoin(ROUND);
     line(previousMouseX, previousMouseY, mouseX, mouseY);
   }
   
@@ -23,56 +26,29 @@ function draw() {
   previousMouseY = mouseY;
   
   // UI panel
-  fill(0, 0, 95);
+  colorMode(RGB);
+  fill(255, 255, 255, 240);
   noStroke();
-  rect(0, 0, 200, 100);
+  rect(10, 10, 220, 130, 12);
   
-  fill(0);
+  fill(50);
+  textSize(14);
+  text('Drawing Tool', 25, 35);
+  textSize(11);
+  text('Keys 1-5: Brush size', 25, 55);
+  text('C: Clear canvas', 25, 70);
+  text('S: Save image', 25, 85);
+  text(`Size: ${brushSize}px`, 25, 100);
+  text(`Hue: ${Math.floor(hue)}`, 25, 115);
+  
+  // Color preview
+  colorMode(HSB);
+  fill(hue, 80, 100);
   noStroke();
-  textSize(12);
-  textAlign(LEFT);
-  text(`Brush size: ${brushSize}`, 10, 20);
-  text('Press 1-5 for size', 10, 35);
-  text('Click color swatches', 10, 50);
-  text('Press C to clear', 10, 65);
-  text('Press S to save', 10, 80);
+  rect(180, 25, 30, 30, 6);
   
-  // Color swatches
-  drawColorSwatch(10, 90, color(0));
-  drawColorSwatch(40, 90, color(0, 100, 100));
-  drawColorSwatch(70, 90, color(120, 100, 100));
-  drawColorSwatch(100, 90, color(240, 100, 100));
-  drawColorSwatch(130, 90, color(0, 0, 100));
-}
-
-function drawColorSwatch(x, y, c) {
-  fill(c);
-  noStroke();
-  rect(x, y, 25, 25);
-  if (brushColor.toString() === c.toString()) {
-    stroke(0);
-    strokeWeight(2);
-    noFill();
-    rect(x - 2, y - 2, 29, 29);
-  }
-}
-
-function mousePressed() {
-  // Check color swatches
-  let swatchColors = [
-    color(0),
-    color(0, 100, 100),
-    color(120, 100, 100),
-    color(240, 100, 100),
-    color(0, 0, 100)
-  ];
-  let swatchX = [10, 40, 70, 100, 130];
-  
-  for (let i = 0; i < swatchX.length; i++) {
-    if (mouseX > swatchX[i] && mouseX < swatchX[i] + 25 && mouseY > 90 && mouseY < 115) {
-      brushColor = swatchColors[i];
-    }
-  }
+  hue = (hue + 0.5) % 360;
+  brushColor = color(hue, 80, 100);
 }
 
 function keyPressed() {

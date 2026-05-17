@@ -3,8 +3,9 @@
 let grid;
 let cols = 60;
 let rows = 40;
-let resolution = 10;
+let resolution = 12;
 let running = true;
+let generation = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -16,49 +17,45 @@ function setup() {
 }
 
 function draw() {
-  background(30);
+  background(20, 25, 30);
   
-  // Draw grid
+  if (running) {
+    grid = computeNextGeneration();
+    generation++;
+  }
+  
+  // Draw cells with glow effect
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
       if (grid[i][j] === 1) {
-        fill(100, 255, 100);
-        noStroke();
-        rect(i * resolution, j * resolution, resolution - 1, resolution - 1);
-      }
-    }
-  }
-  
-  // Update grid
-  if (running) {
-    let next = createGrid(cols, rows);
-    for (let i = 0; i < cols; i++) {
-      for (let j = 0; j < rows; j++) {
-        let state = grid[i][j];
-        let neighbors = countNeighbors(grid, i, j);
+        let x = i * resolution;
+        let y = j * resolution;
         
-        if (state === 0 && neighbors === 3) {
-          next[i][j] = 1;
-        } else if (state === 1 && (neighbors < 2 || neighbors > 3)) {
-          next[i][j] = 0;
-        } else {
-          next[i][j] = state;
-        }
+        // Glow
+        fill(100, 200, 255, 50);
+        noStroke();
+        rect(x - 2, y - 2, resolution + 4, resolution + 4, 3);
+        
+        // Cell
+        fill(100, 200, 255);
+        rect(x + 1, y + 1, resolution - 2, resolution - 2, 2);
       }
     }
-    grid = next;
   }
   
-  // Instructions
-  fill(200);
+  // UI panel
+  colorMode(RGB);
+  fill(0, 0, 0, 150);
   noStroke();
-  textSize(12);
-  text('Game of Life', 10, 20);
-  text('Click to toggle cells', 10, 35);
-  text('SPACE: pause/resume', 10, 50);
-  text('R: randomize', 10, 65);
-  text('C: clear', 10, 80);
-  text(`Running: ${running}`, 10, 95);
+  rect(10, 10, 180, 70, 8);
+  fill(200);
+  textSize(14);
+  text('Game of Life', 25, 30);
+  textSize(11);
+  text(`Generation: ${generation}`, 25, 45);
+  text(`Population: ${countPopulation()}`, 25, 58);
+  text('SPACE: pause • R: random • C: clear', 25, 73);
+  colorMode(HSB);
 }
 
 function createGrid(cols, rows) {
@@ -72,9 +69,29 @@ function createGrid(cols, rows) {
 function randomizeGrid() {
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
-      grid[i][j] = random() > 0.85 ? 1 : 0;
+      grid[i][j] = random() > 0.8 ? 1 : 0;
     }
   }
+  generation = 0;
+}
+
+function computeNextGeneration() {
+  let next = createGrid(cols, rows);
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      let state = grid[i][j];
+      let neighbors = countNeighbors(grid, i, j);
+      
+      if (state === 0 && neighbors === 3) {
+        next[i][j] = 1;
+      } else if (state === 1 && (neighbors < 2 || neighbors > 3)) {
+        next[i][j] = 0;
+      } else {
+        next[i][j] = state;
+      }
+    }
+  }
+  return next;
 }
 
 function countNeighbors(grid, x, y) {
@@ -90,6 +107,16 @@ function countNeighbors(grid, x, y) {
   return sum;
 }
 
+function countPopulation() {
+  let count = 0;
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      count += grid[i][j];
+    }
+  }
+  return count;
+}
+
 function mousePressed() {
   let i = floor(mouseX / resolution);
   let j = floor(mouseY / resolution);
@@ -101,7 +128,10 @@ function mousePressed() {
 function keyPressed() {
   if (key === ' ') running = !running;
   if (key === 'r' || key === 'R') randomizeGrid();
-  if (key === 'c' || key === 'C') grid = createGrid(cols, rows);
+  if (key === 'c' || key === 'C') {
+    grid = createGrid(cols, rows);
+    generation = 0;
+  }
 }
 
 function windowResized() {

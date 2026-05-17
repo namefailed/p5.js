@@ -1,6 +1,7 @@
 // Sierpinski Triangle - classic fractal triangle
 
 let depth = 5;
+let hueOffset = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -8,41 +9,41 @@ function setup() {
 }
 
 function draw() {
-  background(220, 80, 10);
+  background(230, 30, 10);
+  
+  hueOffset += 0.5;
   
   translate(width / 2, height);
   
   // Draw sierpinski triangle
-  let size = 300;
-  sierpinski(size, depth);
+  let size = min(width, height) * 0.8;
+  drawSierpinski(0, 0, size, depth);
   
   // Instructions
+  resetMatrix();
   colorMode(RGB);
-  fill(200);
+  fill(0, 0, 0, 150);
   noStroke();
+  rect(10, 10, 150, 45, 8);
+  fill(200);
   textSize(12);
-  text('Sierpinski triangle fractal', -280, -370);
-  text('Click to change depth', -280, -355);
-  text(`Depth: ${depth}`, -280, -340);
+  text('Classic fractal triangle', 25, 30);
+  textSize(11);
+  text('Click to change depth • SPACE to reset', 25, 45);
   colorMode(HSB);
 }
 
-function sierpinski(size, d) {
+function drawSierpinski(x, y, size, d) {
   if (d === 0) {
-    fill(random(360), 80, 100);
+    let hue = (hueOffset + map(x, -size, size, 0, 60)) % 360;
+    fill(hue, 70, 100);
     noStroke();
-    triangle(-size / 2, size / 2, size / 2, size / 2, 0, -size / 2);
+    triangle(x, y, x + size, y, x + size / 2, y - size * 0.866);
   } else {
     let newSize = size / 2;
-    sierpinski(newSize, d - 1);
-    translate(-newSize, newSize / 2);
-    sierpinski(newSize, d - 1);
-    translate(newSize * 2, 0);
-    sierpinski(newSize, d - 1);
-    translate(-newSize, -newSize);
-    translate(0, -newSize);
-    sierpinski(newSize, d - 1);
-    translate(0, newSize);
+    drawSierpinski(x, y, newSize, d - 1);
+    drawSierpinski(x + newSize, y, newSize, d - 1);
+    drawSierpinski(x + newSize / 2, y - newSize * 0.866, newSize, d - 1);
   }
 }
 

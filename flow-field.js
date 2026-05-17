@@ -2,9 +2,10 @@
 
 let particles = [];
 let flowField;
-let resolution = 20;
+let resolution = 15;
 let cols, rows;
 let zOff = 0;
+let hueOffset = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -14,13 +15,15 @@ function setup() {
   rows = floor(height / resolution);
   
   // Initialize particles
-  for (let i = 0; i < 500; i++) {
+  for (let i = 0; i < 800; i++) {
     particles.push(new Particle());
   }
 }
 
 function draw() {
-  background(220, 80, 10, 0.1);
+  background(220, 60, 5, 0.05);
+  
+  hueOffset += 0.2;
   
   // Calculate flow field
   let yOff = 0;
@@ -34,7 +37,7 @@ function draw() {
     }
     yOff += 0.1;
   }
-  zOff += 0.003;
+  zOff += 0.005;
   
   // Update and display particles
   for (let particle of particles) {
@@ -45,11 +48,13 @@ function draw() {
   
   // Instructions
   colorMode(RGB);
-  fill(200);
+  fill(0, 0, 0, 150);
   noStroke();
+  rect(10, 10, 180, 45, 8);
+  fill(200);
   textSize(12);
-  text('Perlin noise flow field', 10, 20);
-  text(`Particles: ${particles.length}`, 10, 35);
+  text('Perlin noise flow field', 25, 30);
+  text(`Particles: ${particles.length}`, 25, 45);
   colorMode(HSB);
 }
 
@@ -58,7 +63,7 @@ class Particle {
     this.pos = createVector(random(width), random(height));
     this.vel = createVector(0, 0);
     this.acc = createVector(0, 0);
-    this.maxSpeed = 2;
+    this.maxSpeed = 3;
     this.prevPos = this.pos.copy();
     this.hue = random(360);
   }
@@ -76,11 +81,14 @@ class Particle {
     this.vel.limit(this.maxSpeed);
     this.pos.add(this.vel);
     this.acc.mult(0);
+    
+    // Update hue based on position
+    this.hue = (map(this.pos.x, 0, width, 0, 360) + hueOffset) % 360;
   }
   
   display() {
-    stroke(this.hue, 80, 100);
-    strokeWeight(1);
+    stroke(this.hue, 75, 100);
+    strokeWeight(1.5);
     line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
     this.prevPos = this.pos.copy();
   }

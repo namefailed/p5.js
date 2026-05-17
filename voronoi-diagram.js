@@ -2,6 +2,7 @@
 
 let points = [];
 let numPoints = 8;
+let hueOffset = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -18,50 +19,58 @@ function setup() {
 }
 
 function draw() {
-  background(220, 80, 10);
+  background(230, 30, 10);
   
-  // Draw voronoi diagram
+  hueOffset += 0.5;
+  
+  // Draw voronoi cells
   loadPixels();
-  for (let x = 0; x < width; x++) {
-    for (let y = 0; y < height; y++) {
-      let closestDist = Infinity;
+  for (let x = 0; x < width; x += 2) {
+    for (let y = 0; y < height; y += 2) {
+      let minDist = Infinity;
       let closestPoint = null;
       
-      // Find closest point
       for (let point of points) {
         let d = dist(x, y, point.x, point.y);
-        if (d < closestDist) {
-          closestDist = d;
+        if (d < minDist) {
+          minDist = d;
           closestPoint = point;
         }
       }
       
-      // Set pixel color based on closest point
-      let index = (x + y * width) * 4;
-      let c = color(closestPoint.hue, 80, 100);
-      pixels[index] = red(c);
-      pixels[index + 1] = green(c);
-      pixels[index + 2] = blue(c);
-      pixels[index + 3] = 255;
+      if (closestPoint) {
+        let hue = (closestPoint.hue + hueOffset) % 360;
+        set(x, y, color(hue, 70, 100));
+        set(x + 1, y, color(hue, 70, 100));
+        set(x, y + 1, color(hue, 70, 100));
+        set(x + 1, y + 1, color(hue, 70, 100));
+      }
     }
   }
   updatePixels();
   
-  // Draw points
+  // Draw points with glow
   for (let point of points) {
-    fill(0);
+    // Glow
+    fill(point.hue, 80, 100, 50);
     noStroke();
-    ellipse(point.x, point.y, 10);
+    ellipse(point.x, point.y, 25, 25);
+    
+    // Point
+    fill(255);
+    ellipse(point.x, point.y, 10, 10);
   }
   
-  // Instructions
+  // UI panel
   colorMode(RGB);
-  fill(200);
+  fill(0, 0, 0, 150);
   noStroke();
+  rect(10, 10, 150, 45, 8);
+  fill(200);
   textSize(12);
-  text('Voronoi diagram: click to add point', 10, 20);
-  text(`Points: ${points.length}`, 10, 35);
-  text('Press SPACE to reset', 10, 50);
+  text('Interactive voronoi diagram', 25, 30);
+  textSize(11);
+  text('Click to add • SPACE to reset', 25, 45);
   colorMode(HSB);
 }
 
@@ -71,18 +80,20 @@ function mousePressed() {
     y: mouseY,
     hue: random(360)
   });
+  numPoints++;
 }
 
 function keyPressed() {
   if (key === ' ') {
     points = [];
-    for (let i = 0; i < numPoints; i++) {
+    for (let i = 0; i < 8; i++) {
       points.push({
         x: random(width),
         y: random(height),
         hue: random(360)
       });
     }
+    numPoints = 8;
   }
 }
 

@@ -1,14 +1,14 @@
 // Interactive Grid - grid of cells that change on hover/click
 
-let cols = 20;
-let rows = 15;
+let cols = 40;
+let rows = 30;
 let cellSize = 30;
 let grid = [];
+let hueOffset = 0;
 
 function setup() {
-  cols = 40;
-  rows = 30;
-  cellSize = 30;
+  cols = floor(windowWidth / cellSize);
+  rows = floor(windowHeight / cellSize);
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
   
@@ -27,47 +27,63 @@ function setup() {
 }
 
 function draw() {
-  background(220, 80, 10);
+  background(230, 30, 10);
+  
+  hueOffset += 0.5;
   
   // Draw grid
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
       let x = i * cellSize;
       let y = j * cellSize;
-      let cell = grid[i][j];
       
-      // Check if mouse is over this cell
-      if (mouseX > x && mouseX < x + cellSize &&
-          mouseY > y && mouseY < y + cellSize) {
-        cell.active = true;
-        cell.hue = (cell.hue + 1) % 360;
+      if (grid[i][j].active) {
+        // Active cell with glow
+        fill(grid[i][j].hue, grid[i][j].saturation, grid[i][j].brightness);
+        noStroke();
+        rect(x + 2, y + 2, cellSize - 4, cellSize - 4, 6);
+        
+        // Glow effect
+        fill(grid[i][j].hue, grid[i][j].saturation, 100, 30);
+        rect(x, y, cellSize, cellSize, 8);
+      } else {
+        // Inactive cell
+        fill(0, 0, 15);
+        noStroke();
+        rect(x + 1, y + 1, cellSize - 2, cellSize - 2, 4);
       }
-      
-      // Draw cell
-      stroke(0);
-      strokeWeight(1);
-      fill(cell.hue, cell.saturation, cell.brightness);
-      rect(x, y, cellSize, cellSize);
     }
   }
   
-  // Instructions
+  // Hover effect
+  let hoverI = floor(mouseX / cellSize);
+  let hoverJ = floor(mouseY / cellSize);
+  if (hoverI >= 0 && hoverI < cols && hoverJ >= 0 && hoverJ < rows) {
+    grid[hoverI][hoverJ].hue = (hueOffset) % 360;
+    grid[hoverI][hoverJ].saturation = 80;
+    grid[hoverI][hoverJ].brightness = 100;
+    grid[hoverI][hoverJ].active = true;
+  }
+  
+  // UI panel
   colorMode(RGB);
-  fill(200);
+  fill(0, 0, 0, 150);
   noStroke();
+  rect(10, 10, 160, 45, 8);
+  fill(200);
   textSize(12);
-  text('Hover to change colors • Click to randomize all', 10, 15);
+  text('Interactive Grid', 25, 30);
+  textSize(11);
+  text('Click or hover to activate • SPACE to reset', 25, 45);
   colorMode(HSB);
 }
 
 function mousePressed() {
-  // Randomize entire grid
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      grid[i][j].hue = random(360);
-      grid[i][j].saturation = random(50, 100);
-      grid[i][j].brightness = random(80, 100);
-    }
+  let i = floor(mouseX / cellSize);
+  let j = floor(mouseY / cellSize);
+  if (i >= 0 && i < cols && j >= 0 && j < rows) {
+    grid[i][j].active = !grid[i][j].active;
+    grid[i][j].hue = random(360);
   }
 }
 
@@ -79,6 +95,7 @@ function keyPressed() {
         grid[i][j].hue = random(360);
         grid[i][j].saturation = 80;
         grid[i][j].brightness = 100;
+        grid[i][j].active = false;
       }
     }
   }

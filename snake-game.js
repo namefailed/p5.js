@@ -6,25 +6,29 @@ let gridSize = 20;
 let direction = 'RIGHT';
 let score = 0;
 let gameOver = false;
+let highScore = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  frameRate(10);
+  frameRate(12);
   resetGame();
 }
 
 function draw() {
-  background(30);
+  background(20, 25, 30);
   
   if (gameOver) {
-    fill(200);
+    // Game over screen
+    fill(255, 100, 100, 80);
     noStroke();
-    textSize(32);
+    textSize(48);
     textAlign(CENTER);
-    text('GAME OVER', width / 2, height / 2 - 20);
-    textSize(16);
-    text('Press SPACE to restart', width / 2, height / 2 + 20);
-    text(`Score: ${score}`, width / 2, height / 2 + 50);
+    text('GAME OVER', width / 2, height / 2 - 40);
+    textSize(20);
+    fill(200);
+    text('Press SPACE to restart', width / 2, height / 2);
+    text(`Score: ${score}`, width / 2, height / 2 + 40);
+    text(`High Score: ${highScore}`, width / 2, height / 2 + 70);
     return;
   }
   
@@ -34,6 +38,7 @@ function draw() {
   // Check food collision
   if (snake[0].x === food.x && snake[0].y === food.y) {
     score++;
+    if (score > highScore) highScore = score;
     placeFood();
   } else {
     snake.pop();
@@ -51,25 +56,34 @@ function draw() {
     gameOver = true;
   }
   
-  // Draw food
-  fill(255, 100, 100);
+  // Draw food with glow
+  fill(255, 100, 100, 30);
   noStroke();
+  ellipse(food.x + gridSize / 2, food.y + gridSize / 2, gridSize * 1.5);
+  fill(255, 100, 100);
   ellipse(food.x + gridSize / 2, food.y + gridSize / 2, gridSize - 4);
   
-  // Draw snake
+  // Draw snake with gradient
   for (let i = 0; i < snake.length; i++) {
-    fill(100, 255, 100);
+    let brightness = map(i, 0, snake.length, 100, 60);
+    let size = map(i, 0, snake.length, gridSize, gridSize * 0.8);
+    fill(100, 255, brightness);
     noStroke();
-    rect(snake[i].x, snake[i].y, gridSize, gridSize);
+    rect(snake[i].x + (gridSize - size) / 2, snake[i].y + (gridSize - size) / 2, size, size, 4);
   }
   
-  // Score
-  fill(200);
+  // Score panel
+  colorMode(RGB);
+  fill(0, 0, 0, 150);
   noStroke();
-  textSize(16);
-  textAlign(LEFT);
-  text(`Score: ${score}`, 10, 25);
-  text('Arrow keys to move', 10, 45);
+  rect(10, 10, 150, 55, 8);
+  fill(200);
+  textSize(14);
+  text(`Score: ${score}`, 25, 30);
+  textSize(11);
+  text(`High Score: ${highScore}`, 25, 45);
+  text('Arrow keys to move', 25, 58);
+  colorMode(HSB);
 }
 
 function moveSnake() {
@@ -91,7 +105,7 @@ function placeFood() {
 }
 
 function resetGame() {
-  snake = [{ x: 100, y: 100 }];
+  snake = [{ x: gridSize * 5, y: gridSize * 5 }];
   placeFood();
   direction = 'RIGHT';
   score = 0;
@@ -112,5 +126,6 @@ function keyPressed() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  gridSize = 20;
   resetGame();
 }

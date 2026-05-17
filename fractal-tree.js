@@ -1,8 +1,9 @@
 // Fractal Tree - recursive branching tree with wind effect
 
 let angle = PI / 4;
-let len = 100;
+let len = 120;
 let windOffset = 0;
+let hueOffset = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -10,46 +11,47 @@ function setup() {
 }
 
 function draw() {
-  background(220, 80, 10);
+  background(230, 25, 10);
+  
+  hueOffset += 0.3;
   
   translate(width / 2, height);
   
   // Update wind
-  windOffset = sin(frameCount * 0.02) * 0.1;
+  windOffset = sin(frameCount * 0.02) * 0.15;
   
   // Draw tree
-  stroke(30, 80, 80);
-  strokeWeight(2);
-  branch(len);
+  drawBranch(len, 10);
   
   // Instructions
+  resetMatrix();
   colorMode(RGB);
-  fill(200);
+  fill(0, 0, 0, 150);
   noStroke();
+  rect(10, 10, 140, 45, 8);
+  fill(200);
   textSize(12);
-  text('Fractal tree with wind effect', -280, -370);
-  text('Click to randomize angle', -280, -355);
-  text(`Angle: ${nf(angle * 180 / PI, 1, 1)}°`, -280, -340);
+  text('Fractal tree with wind', 25, 30);
+  text('Click to change angle • SPACE to reset', 25, 45);
   colorMode(HSB);
 }
 
-function branch(len) {
+function drawBranch(len, depth) {
+  stroke(map(depth, 0, 10, 30, 150), 70, 100);
+  strokeWeight(map(depth, 0, 10, 1, 8));
+  
   line(0, 0, 0, -len);
   translate(0, -len);
   
-  if (len > 4) {
-    let newLen = len * 0.67;
-    
+  if (len > 10) {
     push();
     rotate(angle + windOffset);
-    stroke(30, 80, 90);
-    branch(newLen);
+    drawBranch(len * 0.7, depth - 1);
     pop();
     
     push();
     rotate(-angle + windOffset);
-    stroke(30, 80, 85);
-    branch(newLen);
+    drawBranch(len * 0.7, depth - 1);
     pop();
   }
 }

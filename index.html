@@ -16,31 +16,74 @@
 <body>
   <div class="gallery-container">
     <div class="sketch-list">
-      <h1>p5.js Sketch Gallery</h1>
-      <div class="sketch-grid">
-        <button class="sketch-btn" data-sketch="bouncing-balls.js">Bouncing Balls</button>
-        <button class="sketch-btn" data-sketch="particle-trail.js">Particle Trail</button>
-        <button class="sketch-btn" data-sketch="sine-waves.js">Sine Waves</button>
-        <button class="sketch-btn" data-sketch="interactive-grid.js">Interactive Grid</button>
-        <button class="sketch-btn" data-sketch="flow-field.js">Flow Field</button>
-        <button class="sketch-btn" data-sketch="lissajous-curves.js">Lissajous Curves</button>
-        <button class="sketch-btn" data-sketch="spirograph.js">Spirograph</button>
-        <button class="sketch-btn" data-sketch="voronoi-diagram.js">Voronoi Diagram</button>
-        <button class="sketch-btn" data-sketch="fractal-tree.js">Fractal Tree</button>
-        <button class="sketch-btn" data-sketch="sierpinski-triangle.js">Sierpinski Triangle</button>
-        <button class="sketch-btn" data-sketch="mandelbrot-explorer.js">Mandelbrot Explorer</button>
-        <button class="sketch-btn" data-sketch="pong-clone.js">Pong Clone</button>
-        <button class="sketch-btn" data-sketch="snake-game.js">Snake Game</button>
-        <button class="sketch-btn" data-sketch="drawing-tool.js">Drawing Tool</button>
-        <button class="sketch-btn" data-sketch="game-of-life.js">Game of Life</button>
-        <button class="sketch-btn" data-sketch="rotating-cube.js">Rotating Cube</button>
-        <button class="sketch-btn" data-sketch="terrain-generator.js">Terrain Generator</button>
-        <button class="sketch-btn" data-sketch="particle-fountain.js">Particle Fountain</button>
+      <div class="sketch-header">
+        <h1>p5.js Sketch Gallery</h1>
+        <p class="subtitle">Interactive creative coding examples</p>
+      </div>
+      
+      <div class="sketch-category">
+        <h3>Beginner</h3>
+        <div class="sketch-grid">
+          <button class="sketch-btn" data-sketch="bouncing-balls.js" data-desc="Physics demo with gravity, collision, and mouse interaction">Bouncing Balls</button>
+          <button class="sketch-btn" data-sketch="particle-trail.js" data-desc="Mouse-following particles with fade effect">Particle Trail</button>
+          <button class="sketch-btn" data-sketch="sine-waves.js" data-desc="Animated waves with color gradients">Sine Waves</button>
+          <button class="sketch-btn" data-sketch="interactive-grid.js" data-desc="Grid of cells that change on hover/click">Interactive Grid</button>
+        </div>
+      </div>
+      
+      <div class="sketch-category">
+        <h3>Generative Art</h3>
+        <div class="sketch-grid">
+          <button class="sketch-btn" data-sketch="flow-field.js" data-desc="Perlin noise-driven particle flow">Flow Field</button>
+          <button class="sketch-btn" data-sketch="lissajous-curves.js" data-desc="Complex harmonic motion patterns">Lissajous Curves</button>
+          <button class="sketch-btn" data-sketch="spirograph.js" data-desc="Geometric spirograph with variable parameters">Spirograph</button>
+          <button class="sketch-btn" data-sketch="voronoi-diagram.js" data-desc="Interactive voronoi cell visualization">Voronoi Diagram</button>
+        </div>
+      </div>
+      
+      <div class="sketch-category">
+        <h3>Fractals</h3>
+        <div class="sketch-grid">
+          <button class="sketch-btn" data-sketch="fractal-tree.js" data-desc="Recursive branching tree with wind effect">Fractal Tree</button>
+          <button class="sketch-btn" data-sketch="sierpinski-triangle.js" data-desc="Classic fractal triangle">Sierpinski Triangle</button>
+          <button class="sketch-btn" data-sketch="mandelbrot-explorer.js" data-desc="Zoomable mandelbrot set">Mandelbrot Explorer</button>
+        </div>
+      </div>
+      
+      <div class="sketch-category">
+        <h3>Games</h3>
+        <div class="sketch-grid">
+          <button class="sketch-btn" data-sketch="pong-clone.js" data-desc="Classic paddle game">Pong Clone</button>
+          <button class="sketch-btn" data-sketch="snake-game.js" data-desc="Classic snake mechanics">Snake Game</button>
+        </div>
+      </div>
+      
+      <div class="sketch-category">
+        <h3>Interactive Tools</h3>
+        <div class="sketch-grid">
+          <button class="sketch-btn" data-sketch="drawing-tool.js" data-desc="Brush with size/color controls">Drawing Tool</button>
+          <button class="sketch-btn" data-sketch="game-of-life.js" data-desc="Cellular automaton simulation">Game of Life</button>
+        </div>
+      </div>
+      
+      <div class="sketch-category">
+        <h3>3D & Advanced</h3>
+        <div class="sketch-grid">
+          <button class="sketch-btn" data-sketch="rotating-cube.js" data-desc="3D cube with lighting">Rotating Cube</button>
+          <button class="sketch-btn" data-sketch="terrain-generator.js" data-desc="3D terrain using noise">Terrain Generator</button>
+          <button class="sketch-btn" data-sketch="particle-fountain.js" data-desc="3D particle fountain">Particle Fountain</button>
+        </div>
       </div>
     </div>
     <div class="canvas-container">
-      <div id="current-sketch-name">Select a sketch to view</div>
+      <div class="canvas-header">
+        <h2 id="current-sketch-name">Bouncing Balls</h2>
+        <p id="current-sketch-desc">Physics demo with gravity, collision, and mouse interaction</p>
+      </div>
       <div id="sketch-container"></div>
+      <div class="canvas-footer">
+        <p class="tip">💡 Tip: Press SPACE in most sketches to reset or pause</p>
+      </div>
     </div>
   </div>
   <script>
@@ -49,11 +92,16 @@
     document.querySelectorAll('.sketch-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const sketchFile = btn.dataset.sketch;
-        loadSketch(sketchFile);
+        const sketchDesc = btn.dataset.desc || '';
+        loadSketch(sketchFile, sketchDesc);
+        
+        // Update active state
+        document.querySelectorAll('.sketch-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
       });
     });
     
-    function loadSketch(sketchFile) {
+    function loadSketch(sketchFile, description) {
       // Remove current sketch if exists
       if (currentSketchScript) {
         currentSketchScript.remove();
@@ -65,8 +113,9 @@
         existingCanvas.remove();
       }
       
-      // Update sketch name
-      document.getElementById('current-sketch-name').textContent = sketchFile.replace('.js', '');
+      // Update sketch name and description
+      document.getElementById('current-sketch-name').textContent = sketchFile.replace('.js', '').replace(/-/g, ' ');
+      document.getElementById('current-sketch-desc').textContent = description || '';
       
       // Load new sketch
       currentSketchScript = document.createElement('script');
@@ -74,8 +123,8 @@
       document.getElementById('sketch-container').appendChild(currentSketchScript);
     }
     
-    // Load first sketch by default
-    loadSketch('bouncing-balls.js');
+    // Set first sketch as active
+    document.querySelector('[data-sketch="bouncing-balls.js"]').classList.add('active');
   </script>
 </body>
 

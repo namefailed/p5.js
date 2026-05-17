@@ -4,6 +4,7 @@ let t = 0;
 let a = 3;
 let b = 2;
 let delta = PI / 2;
+let hueOffset = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -11,48 +12,64 @@ function setup() {
 }
 
 function draw() {
-  background(220, 80, 10);
+  background(230, 30, 10);
+  
+  hueOffset += 0.5;
   
   translate(width / 2, height / 2);
   
   // Draw multiple Lissajous curves with different parameters
-  let numCurves = 5;
+  let numCurves = 7;
   for (let i = 0; i < numCurves; i++) {
-    let hue = map(i, 0, numCurves, 0, 360);
-    let a_i = a + i * 0.5;
-    let b_i = b + i * 0.3;
-    let delta_i = delta + i * 0.2;
+    let scale = map(i, 0, numCurves - 1, min(width, height) * 0.35, min(width, height) * 0.05);
+    let hue = (map(i, 0, numCurves, 0, 360) + hueOffset) % 360;
+    let localA = a + i * 0.5;
+    let localB = b + i * 0.3;
     
-    drawLissajous(a_i, b_i, delta_i, hue, i);
+    // Glow effect
+    for (let g = 2; g > 0; g--) {
+      stroke(hue, 70, 100, 0.08 / g);
+      strokeWeight(2 + g * 2);
+      noFill();
+      beginShape();
+      for (let angle = 0; angle < TWO_PI; angle += 0.02) {
+        let x = scale * sin(localA * angle + delta + i * 0.2);
+        let y = scale * sin(localB * angle);
+        vertex(x, y);
+      }
+      endShape();
+    }
+    
+    // Main curve
+    stroke(hue, 80, 100);
+    strokeWeight(1.5);
+    noFill();
+    beginShape();
+    for (let angle = 0; angle < TWO_PI; angle += 0.01) {
+      let x = scale * sin(localA * angle + delta + i * 0.2);
+      let y = scale * sin(localB * angle);
+      vertex(x, y);
+    }
+    endShape();
   }
   
-  t += 0.02;
+  t += 0.01;
   
-  // Instructions
+  // Instructions (reset matrix for text)
+  resetMatrix();
   colorMode(RGB);
-  fill(200);
+  fill(0, 0, 0, 150);
   noStroke();
+  rect(10, 10, 160, 45, 8);
+  fill(200);
   textSize(12);
-  text('Lissajous curves: x = sin(at + δ), y = sin(bt)', -280, -180);
-  text('Click to randomize parameters', -280, -165);
+  text('Lissajous curves', 25, 30);
+  text('Click to randomize • SPACE to reset', 25, 45);
   colorMode(HSB);
 }
 
-function drawLissajous(a, b, delta, hue, index) {
-  noFill();
-  stroke(hue, 80, 100);
-  strokeWeight(2);
-  
-  beginShape();
-  for (let angle = 0; angle <= TWO_PI; angle += 0.01) {
-    let x = 150 * sin(a * angle + delta);
-    let y = 150 * sin(b * angle);
-    vertex(x, y);
-  }
-  endShape();
-}
-
 function mousePressed() {
+  a = random(1, 6);
   a = random(1, 5);
   b = random(1, 5);
   delta = random(0, TWO_PI);
