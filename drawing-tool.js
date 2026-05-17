@@ -5,7 +5,7 @@ let brushColor;
 let previousMouseX, previousMouseY;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   background(255);
   brushColor = color(0);
   colorMode(HSB);
@@ -83,4 +83,9 @@ function keyPressed() {
   if (key === '5') brushSize = 50;
   if (key === 'c' || key === 'C') background(255);
   if (key === 's' || key === 'S') saveCanvas('drawing', 'png');
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  background(255);
 }

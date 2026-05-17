@@ -5,7 +5,7 @@ let maxVal = 2.5;
 let maxIter = 100;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
   pixelDensity(1);
 }
@@ -76,4 +76,8 @@ function keyPressed() {
     maxVal = 2.5;
     maxIter = 100;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

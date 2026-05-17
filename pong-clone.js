@@ -11,7 +11,7 @@ let leftScore = 0;
 let rightScore = 0;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   leftY = height / 2 - paddleHeight / 2;
   rightY = height / 2 - paddleHeight / 2;
   resetBall();
@@ -102,4 +102,10 @@ function keyPressed() {
     leftScore = 0;
     rightScore = 0;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  leftY = height / 2 - paddleHeight / 2;
+  rightY = height / 2 - paddleHeight / 2;
 }

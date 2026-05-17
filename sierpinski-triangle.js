@@ -3,7 +3,7 @@
 let depth = 5;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
 }
 
@@ -55,4 +55,8 @@ function keyPressed() {
   if (key === ' ') {
     depth = 5;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

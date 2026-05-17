@@ -1,7 +1,7 @@
 // Rotating Cube - 3D cube with lighting
 
 function setup() {
-  createCanvas(800, 600, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
 }
 
 function draw() {
@@ -33,6 +33,11 @@ function draw() {
   text('Move mouse to change rotation speed', -280, -165);
   pop();
 }
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
 
 function mouseMoved() {
   // Change rotation speed based on mouse position

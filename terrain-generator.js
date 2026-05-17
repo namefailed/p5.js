@@ -7,7 +7,7 @@ let w, h;
 let terrain = [];
 
 function setup() {
-  createCanvas(800, 600, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   w = cols * scl;
   h = rows * scl;
   
@@ -71,4 +71,8 @@ function mousePressed() {
     }
     yoff += 0.1;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

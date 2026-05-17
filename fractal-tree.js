@@ -5,7 +5,7 @@ let len = 100;
 let windOffset = 0;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
 }
 
@@ -62,4 +62,8 @@ function keyPressed() {
   if (key === ' ') {
     angle = PI / 4;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

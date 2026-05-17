@@ -6,7 +6,7 @@ let b = 2;
 let delta = PI / 2;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
 }
 
@@ -64,4 +64,8 @@ function keyPressed() {
     b = 2;
     delta = PI / 2;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

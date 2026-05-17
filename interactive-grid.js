@@ -6,10 +6,10 @@ let cellSize = 30;
 let grid = [];
 
 function setup() {
-  cols = 26;
-  rows = 20;
+  cols = 40;
+  rows = 30;
   cellSize = 30;
-  createCanvas(cols * cellSize, rows * cellSize);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
   
   // Initialize grid
@@ -80,6 +80,25 @@ function keyPressed() {
         grid[i][j].saturation = 80;
         grid[i][j].brightness = 100;
       }
+    }
+  }
+}
+
+function windowResized() {
+  cols = floor(windowWidth / cellSize);
+  rows = floor(windowHeight / cellSize);
+  resizeCanvas(windowWidth, windowHeight);
+  // Reinitialize grid
+  grid = [];
+  for (let i = 0; i < cols; i++) {
+    grid[i] = [];
+    for (let j = 0; j < rows; j++) {
+      grid[i][j] = {
+        hue: random(360),
+        saturation: 80,
+        brightness: 100,
+        active: false
+      };
     }
   }
 }

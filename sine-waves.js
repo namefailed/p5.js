@@ -3,7 +3,7 @@
 let t = 0;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
 }
 
@@ -54,4 +54,8 @@ function keyPressed() {
       loop();
     }
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

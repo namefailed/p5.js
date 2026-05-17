@@ -4,7 +4,7 @@ let points = [];
 let numPoints = 8;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
   
   // Initialize random points
@@ -84,4 +84,8 @@ function keyPressed() {
       });
     }
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

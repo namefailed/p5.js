@@ -8,7 +8,7 @@ let score = 0;
 let gameOver = false;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   frameRate(10);
   resetGame();
 }
@@ -108,4 +108,9 @@ function keyPressed() {
   if (keyCode === DOWN_ARROW && direction !== 'UP') direction = 'DOWN';
   if (keyCode === LEFT_ARROW && direction !== 'RIGHT') direction = 'LEFT';
   if (keyCode === RIGHT_ARROW && direction !== 'LEFT') direction = 'RIGHT';
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  resetGame();
 }

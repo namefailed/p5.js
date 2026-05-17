@@ -6,7 +6,7 @@ let r = 30;  // Inner radius
 let d = 50;  // Distance from inner circle center
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
 }
 
@@ -53,4 +53,8 @@ function keyPressed() {
     r = 30;
     d = 50;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

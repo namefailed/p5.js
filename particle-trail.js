@@ -4,7 +4,7 @@ let particles = [];
 let maxParticles = 100;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
 }
 
@@ -75,4 +75,8 @@ class Particle {
   isDead() {
     return this.life <= 0 || this.size < 0.5;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

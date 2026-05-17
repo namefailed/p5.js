@@ -4,7 +4,7 @@ let particles = [];
 let maxParticles = 500;
 
 function setup() {
-  createCanvas(800, 600, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
 }
 
 function draw() {
@@ -81,4 +81,8 @@ class Particle {
   isDead() {
     return this.life <= 0 || this.pos.y > 200;
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

@@ -5,7 +5,7 @@ let gravitySlider;
 let frictionSlider;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   
   // Create initial balls
   for (let i = 0; i < 15; i++) {
@@ -49,6 +49,10 @@ function keyPressed() {
       balls.push(new Ball(random(width), random(height / 2), random(20, 40)));
     }
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 class Ball {

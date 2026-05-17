@@ -7,7 +7,7 @@ let cols, rows;
 let zOff = 0;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
   
   cols = floor(width / resolution);
@@ -103,4 +103,10 @@ class Particle {
       this.prevPos.y = height;
     }
   }
+}
+
+function windowResized() {
+  cols = floor(windowWidth / resolution);
+  rows = floor(windowHeight / resolution);
+  resizeCanvas(windowWidth, windowHeight);
 }

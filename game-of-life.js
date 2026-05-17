@@ -7,7 +7,7 @@ let resolution = 10;
 let running = true;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   frameRate(10);
   cols = width / resolution;
   rows = height / resolution;
@@ -102,4 +102,12 @@ function keyPressed() {
   if (key === ' ') running = !running;
   if (key === 'r' || key === 'R') randomizeGrid();
   if (key === 'c' || key === 'C') grid = createGrid(cols, rows);
+}
+
+function windowResized() {
+  cols = width / resolution;
+  rows = height / resolution;
+  resizeCanvas(windowWidth, windowHeight);
+  grid = createGrid(cols, rows);
+  randomizeGrid();
 }
