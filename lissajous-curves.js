@@ -6,7 +6,7 @@ let b = 2;
 let delta = PI / 2;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   colorMode(HSB);
 }
 

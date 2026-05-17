@@ -7,7 +7,7 @@ let w, h;
 let terrain = [];
 
 function setup() {
-  createCanvas(600, 400, WEBGL);
+  createCanvas(800, 600, WEBGL);
   w = cols * scl;
   h = rows * scl;
   

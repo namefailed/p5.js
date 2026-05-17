@@ -5,7 +5,7 @@ let len = 100;
 let windOffset = 0;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   colorMode(HSB);
 }
 

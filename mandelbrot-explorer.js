@@ -5,7 +5,7 @@ let maxVal = 2.5;
 let maxIter = 100;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   colorMode(HSB);
   pixelDensity(1);
 }

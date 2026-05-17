@@ -8,7 +8,7 @@ let score = 0;
 let gameOver = false;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   frameRate(10);
   resetGame();
 }

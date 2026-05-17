@@ -6,6 +6,9 @@ let cellSize = 30;
 let grid = [];
 
 function setup() {
+  cols = 26;
+  rows = 20;
+  cellSize = 30;
   createCanvas(cols * cellSize, rows * cellSize);
   colorMode(HSB);
   

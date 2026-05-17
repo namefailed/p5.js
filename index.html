@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>p5.js Sketch Gallery</title>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script src="libraries/p5.min.js"></script>
+  <script src="libraries/p5.sound.min.js"></script>
+</head>
+
+<body>
+  <div class="gallery-container">
+    <div class="sketch-list">
+      <h1>p5.js Sketch Gallery</h1>
+      <div class="sketch-grid">
+        <button class="sketch-btn" data-sketch="bouncing-balls.js">Bouncing Balls</button>
+        <button class="sketch-btn" data-sketch="particle-trail.js">Particle Trail</button>
+        <button class="sketch-btn" data-sketch="sine-waves.js">Sine Waves</button>
+        <button class="sketch-btn" data-sketch="interactive-grid.js">Interactive Grid</button>
+        <button class="sketch-btn" data-sketch="flow-field.js">Flow Field</button>
+        <button class="sketch-btn" data-sketch="lissajous-curves.js">Lissajous Curves</button>
+        <button class="sketch-btn" data-sketch="spirograph.js">Spirograph</button>
+        <button class="sketch-btn" data-sketch="voronoi-diagram.js">Voronoi Diagram</button>
+        <button class="sketch-btn" data-sketch="fractal-tree.js">Fractal Tree</button>
+        <button class="sketch-btn" data-sketch="sierpinski-triangle.js">Sierpinski Triangle</button>
+        <button class="sketch-btn" data-sketch="mandelbrot-explorer.js">Mandelbrot Explorer</button>
+        <button class="sketch-btn" data-sketch="pong-clone.js">Pong Clone</button>
+        <button class="sketch-btn" data-sketch="snake-game.js">Snake Game</button>
+        <button class="sketch-btn" data-sketch="drawing-tool.js">Drawing Tool</button>
+        <button class="sketch-btn" data-sketch="game-of-life.js">Game of Life</button>
+        <button class="sketch-btn" data-sketch="rotating-cube.js">Rotating Cube</button>
+        <button class="sketch-btn" data-sketch="terrain-generator.js">Terrain Generator</button>
+        <button class="sketch-btn" data-sketch="particle-fountain.js">Particle Fountain</button>
+      </div>
+    </div>
+    <div class="canvas-container">
+      <div id="current-sketch-name">Select a sketch to view</div>
+      <div id="sketch-container"></div>
+    </div>
+  </div>
+  <script>
+    let currentSketchScript = null;
+    
+    document.querySelectorAll('.sketch-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sketchFile = btn.dataset.sketch;
+        loadSketch(sketchFile);
+      });
+    });
+    
+    function loadSketch(sketchFile) {
+      // Remove current sketch if exists
+      if (currentSketchScript) {
+        currentSketchScript.remove();
+      }
+      
+      // Remove existing canvas
+      const existingCanvas = document.querySelector('canvas');
+      if (existingCanvas) {
+        existingCanvas.remove();
+      }
+      
+      // Update sketch name
+      document.getElementById('current-sketch-name').textContent = sketchFile.replace('.js', '');
+      
+      // Load new sketch
+      currentSketchScript = document.createElement('script');
+      currentSketchScript.src = sketchFile;
+      document.getElementById('sketch-container').appendChild(currentSketchScript);
+    }
+    
+    // Load first sketch by default
+    loadSketch('bouncing-balls.js');
+  </script>
+</body>
+
+</html>

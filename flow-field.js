@@ -7,7 +7,7 @@ let cols, rows;
 let zOff = 0;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   colorMode(HSB);
   
   cols = floor(width / resolution);

@@ -1,12 +1,14 @@
 // Bouncing Balls - physics demo with gravity, collision, mouse interaction
 
 let balls = [];
+let gravitySlider;
+let frictionSlider;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   
   // Create initial balls
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 15; i++) {
     balls.push(new Ball(random(width), random(height / 2), random(20, 40)));
   }
 }
@@ -20,12 +22,18 @@ function draw() {
     ball.display();
   }
   
-  // Instructions
+  // UI panel
+  fill(0, 0, 0, 150);
+  noStroke();
+  rect(10, 10, 200, 80, 8);
+  
   fill(200);
   noStroke();
   textSize(12);
-  text('Click to add balls • Press SPACE to clear', 10, 20);
-  text(`Balls: ${balls.length}`, 10, 35);
+  text('Click to add balls', 25, 30);
+  text('SPACE to clear', 25, 45);
+  text(`Balls: ${balls.length}`, 25, 60);
+  text('Hold click to repel', 25, 75);
 }
 
 function mousePressed() {
@@ -36,6 +44,10 @@ function mousePressed() {
 function keyPressed() {
   if (key === ' ') {
     balls = [];
+    // Reset with initial balls
+    for (let i = 0; i < 15; i++) {
+      balls.push(new Ball(random(width), random(height / 2), random(20, 40)));
+    }
   }
 }
 
@@ -92,9 +104,9 @@ class Ball {
     
     // Mouse repulsion
     let d = dist(this.x, this.y, mouseX, mouseY);
-    if (d < 100 && mouseIsPressed) {
+    if (d < 120 && mouseIsPressed) {
       let angle = atan2(this.y - mouseY, this.x - mouseX);
-      let force = map(d, 0, 100, 5, 0);
+      let force = map(d, 0, 120, 8, 0);
       this.vx += cos(angle) * force;
       this.vy += sin(angle) * force;
     }
@@ -104,5 +116,9 @@ class Ball {
     fill(this.color);
     noStroke();
     ellipse(this.x, this.y, this.size);
+    
+    // Add highlight
+    fill(255, 255, 255, 100);
+    ellipse(this.x - this.size * 0.2, this.y - this.size * 0.2, this.size * 0.3);
   }
 }

@@ -4,7 +4,7 @@ let particles = [];
 let maxParticles = 500;
 
 function setup() {
-  createCanvas(600, 400, WEBGL);
+  createCanvas(800, 600, WEBGL);
 }
 
 function draw() {

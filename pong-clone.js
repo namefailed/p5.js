@@ -11,7 +11,7 @@ let leftScore = 0;
 let rightScore = 0;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   leftY = height / 2 - paddleHeight / 2;
   rightY = height / 2 - paddleHeight / 2;
   resetBall();

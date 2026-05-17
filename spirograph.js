@@ -6,7 +6,7 @@ let r = 30;  // Inner radius
 let d = 50;  // Distance from inner circle center
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   colorMode(HSB);
 }
 

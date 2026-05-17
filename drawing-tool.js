@@ -5,7 +5,7 @@ let brushColor;
 let previousMouseX, previousMouseY;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   background(255);
   brushColor = color(0);
   colorMode(HSB);

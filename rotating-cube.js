@@ -1,7 +1,7 @@
 // Rotating Cube - 3D cube with lighting
 
 function setup() {
-  createCanvas(600, 400, WEBGL);
+  createCanvas(800, 600, WEBGL);
 }
 
 function draw() {

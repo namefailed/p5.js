@@ -4,7 +4,7 @@ let points = [];
 let numPoints = 8;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   colorMode(HSB);
   
   // Initialize random points

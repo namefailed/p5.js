@@ -7,7 +7,7 @@ let resolution = 10;
 let running = true;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(800, 600);
   frameRate(10);
   cols = width / resolution;
   rows = height / resolution;
