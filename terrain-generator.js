@@ -83,15 +83,8 @@ function draw() {
 }
 
 function mousePressed() {
-  let yoff = 0;
-  for (let y = 0; y < rows; y++) {
-    let xoff = 0;
-    for (let x = 0; x < cols; x++) {
-      terrain[y][x] = map(noise(xoff, yoff), 0, 1, -100, 100);
-      xoff += 0.1;
-    }
-    yoff += 0.1;
-  }
+  noiseSeed(floor(random(100000)));
+  flying = 0;
 }
 
 function windowResized() {

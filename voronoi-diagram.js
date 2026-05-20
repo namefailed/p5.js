@@ -3,12 +3,14 @@
 let points = [];
 let numPoints = 8;
 let hueOffset = 0;
+let dirty = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  pixelDensity(1);
   colorMode(HSB);
+  frameRate(20);
   
-  // Initialize random points
   for (let i = 0; i < numPoints; i++) {
     points.push({
       x: random(width),
@@ -19,35 +21,38 @@ function setup() {
 }
 
 function draw() {
-  background(230, 30, 10);
+  hueOffset += 1;
   
-  hueOffset += 0.5;
-  
-  // Draw voronoi cells
-  loadPixels();
-  for (let x = 0; x < width; x += 2) {
-    for (let y = 0; y < height; y += 2) {
-      let minDist = Infinity;
-      let closestPoint = null;
-      
-      for (let point of points) {
-        let d = dist(x, y, point.x, point.y);
-        if (d < minDist) {
-          minDist = d;
-          closestPoint = point;
+  if (dirty) {
+    // Recompute voronoi cells — write directly to pixels[] in RGB
+    loadPixels();
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        let minDist = Infinity;
+        let closestPoint = null;
+        
+        for (let point of points) {
+          let d = dist(x, y, point.x, point.y);
+          if (d < minDist) {
+            minDist = d;
+            closestPoint = point;
+          }
+        }
+        
+        if (closestPoint) {
+          let hue = (closestPoint.hue + hueOffset) % 360;
+          let c = color(hue, 70, map(minDist, 0, 200, 100, 60));
+          let idx = (x + y * width) * 4;
+          pixels[idx]     = red(c);
+          pixels[idx + 1] = green(c);
+          pixels[idx + 2] = blue(c);
+          pixels[idx + 3] = 255;
         }
       }
-      
-      if (closestPoint) {
-        let hue = (closestPoint.hue + hueOffset) % 360;
-        set(x, y, color(hue, 70, 100));
-        set(x + 1, y, color(hue, 70, 100));
-        set(x, y + 1, color(hue, 70, 100));
-        set(x + 1, y + 1, color(hue, 70, 100));
-      }
     }
+    updatePixels();
+    dirty = false;
   }
-  updatePixels();
   
   // Draw points with glow
   for (let point of points) {
@@ -75,28 +80,23 @@ function draw() {
 }
 
 function mousePressed() {
-  points.push({
-    x: mouseX,
-    y: mouseY,
-    hue: random(360)
-  });
+  points.push({ x: mouseX, y: mouseY, hue: random(360) });
   numPoints++;
+  dirty = true;
 }
 
 function keyPressed() {
   if (key === ' ') {
     points = [];
-    for (let i = 0; i < 8; i++) {
-      points.push({
-        x: random(width),
-        y: random(height),
-        hue: random(360)
-      });
-    }
     numPoints = 8;
+    for (let i = 0; i < numPoints; i++) {
+      points.push({ x: random(width), y: random(height), hue: random(360) });
+    }
+    dirty = true;
   }
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  dirty = true;
 }

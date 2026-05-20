@@ -13,149 +13,176 @@
   <script src="libraries/p5.sound.min.js"></script>
 </head>
 
-<body>
+<body class="is-loading">
+  <!-- Intro splash -->
+  <div id="intro" aria-modal="true" role="dialog">
+    <div id="intro-card">
+      <div id="intro-logo">p5</div>
+      <h1 id="intro-title">Creative Coding with p5.js</h1>
+      <p id="intro-body">
+        p5.js is an open-source JavaScript library that makes creative coding
+        accessible. Inspired by Processing, it gives you a full set of drawing
+        primitives, animation loops, and input handling — so you can focus on
+        making things rather than wiring up a renderer.
+      </p>
+      <ul id="intro-features">
+        <li><span class="tag">Canvas 2D &amp; WebGL</span> Draw shapes, images, and 3D geometry</li>
+        <li><span class="tag">60 fps loop</span> Animate with <code>setup()</code> and <code>draw()</code></li>
+        <li><span class="tag">Interaction</span> Mouse, keyboard, touch — all built in</li>
+        <li><span class="tag">Math &amp; Noise</span> Vectors, Perlin noise, trigonometry helpers</li>
+      </ul>
+      <button id="intro-close">Explore the sketches &rarr;</button>
+    </div>
+  </div>
+
   <div class="gallery-container">
     <div class="sketch-list">
-      <div class="sketch-header">
-        <h1>p5.js Sketch Gallery</h1>
-        <p class="subtitle">Interactive creative coding examples</p>
-      </div>
-      
-      <div class="sketch-category">
-        <h3>Beginner</h3>
-        <div class="sketch-grid">
-          <button class="sketch-btn" data-sketch="bouncing-balls.js" data-desc="Physics demo with gravity, collision, and mouse interaction">Bouncing Balls</button>
-          <button class="sketch-btn" data-sketch="particle-trail.js" data-desc="Mouse-following particles with fade effect">Particle Trail</button>
-          <button class="sketch-btn" data-sketch="sine-waves.js" data-desc="Animated waves with color gradients">Sine Waves</button>
-          <button class="sketch-btn" data-sketch="interactive-grid.js" data-desc="Grid of cells that change on hover/click">Interactive Grid</button>
+      <div class="sketch-list-inner">
+        <div class="sketch-header">
+          <h1>p5.js Gallery</h1>
+          <p class="subtitle">Creative coding sketches</p>
         </div>
-      </div>
-      
-      <div class="sketch-category">
-        <h3>Generative Art</h3>
-        <div class="sketch-grid">
-          <button class="sketch-btn" data-sketch="flow-field.js" data-desc="Perlin noise-driven particle flow">Flow Field</button>
-          <button class="sketch-btn" data-sketch="lissajous-curves.js" data-desc="Complex harmonic motion patterns">Lissajous Curves</button>
-          <button class="sketch-btn" data-sketch="spirograph.js" data-desc="Geometric spirograph with variable parameters">Spirograph</button>
-          <button class="sketch-btn" data-sketch="voronoi-diagram.js" data-desc="Interactive voronoi cell visualization">Voronoi Diagram</button>
+
+        <div class="sketch-category">
+          <h3>Beginner</h3>
+          <div class="sketch-grid">
+            <button class="sketch-btn" data-sketch="bouncing-balls.js" data-desc="Physics demo with gravity, collision, and mouse interaction">Bouncing Balls</button>
+            <button class="sketch-btn" data-sketch="particle-trail.js" data-desc="Mouse-following particles with fade effect">Particle Trail</button>
+            <button class="sketch-btn" data-sketch="sine-waves.js" data-desc="Animated waves with color gradients">Sine Waves</button>
+            <button class="sketch-btn" data-sketch="interactive-grid.js" data-desc="Grid of cells that change on hover/click">Interactive Grid</button>
+          </div>
         </div>
-      </div>
-      
-      <div class="sketch-category">
-        <h3>Fractals</h3>
-        <div class="sketch-grid">
-          <button class="sketch-btn" data-sketch="fractal-tree.js" data-desc="Recursive branching tree with wind effect">Fractal Tree</button>
-          <button class="sketch-btn" data-sketch="sierpinski-triangle.js" data-desc="Classic fractal triangle">Sierpinski Triangle</button>
-          <button class="sketch-btn" data-sketch="mandelbrot-explorer.js" data-desc="Zoomable mandelbrot set">Mandelbrot Explorer</button>
+
+        <div class="sketch-category">
+          <h3>Generative Art</h3>
+          <div class="sketch-grid">
+            <button class="sketch-btn" data-sketch="flow-field.js" data-desc="Perlin noise-driven particle flow">Flow Field</button>
+            <button class="sketch-btn" data-sketch="lissajous-curves.js" data-desc="Complex harmonic motion patterns">Lissajous Curves</button>
+            <button class="sketch-btn" data-sketch="spirograph.js" data-desc="Geometric spirograph with variable parameters">Spirograph</button>
+            <button class="sketch-btn" data-sketch="voronoi-diagram.js" data-desc="Interactive voronoi cell visualization">Voronoi Diagram</button>
+          </div>
         </div>
-      </div>
-      
-      <div class="sketch-category">
-        <h3>Games</h3>
-        <div class="sketch-grid">
-          <button class="sketch-btn" data-sketch="pong-clone.js" data-desc="Classic paddle game">Pong Clone</button>
-          <button class="sketch-btn" data-sketch="snake-game.js" data-desc="Classic snake mechanics">Snake Game</button>
+
+        <div class="sketch-category">
+          <h3>Fractals</h3>
+          <div class="sketch-grid">
+            <button class="sketch-btn" data-sketch="fractal-tree.js" data-desc="Recursive branching tree with wind effect">Fractal Tree</button>
+            <button class="sketch-btn" data-sketch="sierpinski-triangle.js" data-desc="Classic fractal triangle">Sierpinski Triangle</button>
+            <button class="sketch-btn" data-sketch="mandelbrot-explorer.js" data-desc="Zoomable Mandelbrot set">Mandelbrot Explorer</button>
+          </div>
         </div>
-      </div>
-      
-      <div class="sketch-category">
-        <h3>Interactive Tools</h3>
-        <div class="sketch-grid">
-          <button class="sketch-btn" data-sketch="drawing-tool.js" data-desc="Brush with size/color controls">Drawing Tool</button>
-          <button class="sketch-btn" data-sketch="game-of-life.js" data-desc="Cellular automaton simulation">Game of Life</button>
+
+        <div class="sketch-category">
+          <h3>Games</h3>
+          <div class="sketch-grid">
+            <button class="sketch-btn" data-sketch="pong-clone.js" data-desc="Classic paddle game">Pong Clone</button>
+            <button class="sketch-btn" data-sketch="snake-game.js" data-desc="Classic snake mechanics">Snake Game</button>
+          </div>
         </div>
-      </div>
-      
-      <div class="sketch-category">
-        <h3>3D & Advanced</h3>
-        <div class="sketch-grid">
-          <button class="sketch-btn" data-sketch="rotating-cube.js" data-desc="3D cube with lighting">Rotating Cube</button>
-          <button class="sketch-btn" data-sketch="terrain-generator.js" data-desc="3D terrain using noise">Terrain Generator</button>
-          <button class="sketch-btn" data-sketch="particle-fountain.js" data-desc="3D particle fountain">Particle Fountain</button>
+
+        <div class="sketch-category">
+          <h3>Interactive</h3>
+          <div class="sketch-grid">
+            <button class="sketch-btn" data-sketch="drawing-tool.js" data-desc="Brush with size/color controls">Drawing Tool</button>
+            <button class="sketch-btn" data-sketch="game-of-life.js" data-desc="Cellular automaton simulation">Game of Life</button>
+          </div>
+        </div>
+
+        <div class="sketch-category">
+          <h3>Physics</h3>
+          <div class="sketch-grid">
+            <button class="sketch-btn" data-sketch="double-pendulum.js" data-desc="Chaotic double pendulum simulation">Double Pendulum</button>
+            <button class="sketch-btn" data-sketch="gravity-simulation.js" data-desc="N-body gravitational attraction">Gravity Simulation</button>
+          </div>
+        </div>
+
+        <div class="sketch-category">
+          <h3>3D</h3>
+          <div class="sketch-grid">
+            <button class="sketch-btn" data-sketch="rotating-cube.js" data-desc="3D cube with lighting">Rotating Cube</button>
+            <button class="sketch-btn" data-sketch="terrain-generator.js" data-desc="3D terrain using Perlin noise">Terrain Generator</button>
+            <button class="sketch-btn" data-sketch="particle-fountain.js" data-desc="3D particle fountain">Particle Fountain</button>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="canvas-container">
       <div class="canvas-header">
         <h2 id="current-sketch-name">Bouncing Balls</h2>
         <p id="current-sketch-desc">Physics demo with gravity, collision, and mouse interaction</p>
       </div>
-      <div id="sketch-container"></div>
+      <iframe id="sketch-frame" src="" frameborder="0" scrolling="no"></iframe>
       <div class="canvas-footer">
-        <p class="tip">💡 Tip: Press SPACE in most sketches to reset or pause</p>
+        <p class="tip">Space to pause · Click to interact</p>
       </div>
     </div>
   </div>
   <script>
-    let currentP5Instance = null;
-    
+    const frame    = document.getElementById('sketch-frame');
+    const nameEl   = document.getElementById('current-sketch-name');
+    const descEl   = document.getElementById('current-sketch-desc');
+    const intro    = document.getElementById('intro');
+    const introBtn = document.getElementById('intro-close');
+
+    /* ── Intro dismiss ─────────────────────────────── */
+    introBtn.addEventListener('click', dismissIntro);
+    intro.addEventListener('click', e => { if (e.target === intro) dismissIntro(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') dismissIntro(); });
+
+    function dismissIntro() {
+      intro.classList.add('is-leaving');
+      intro.addEventListener('animationend', () => {
+        intro.remove();
+        document.body.classList.remove('is-loading');
+        // Stagger sidebar buttons in
+        document.querySelectorAll('.sketch-btn').forEach((btn, i) => {
+          btn.style.animationDelay = `${i * 28}ms`;
+          btn.classList.add('animate-in');
+        });
+      }, { once: true });
+    }
+
+    /* ── Sketch switching ──────────────────────────── */
     document.querySelectorAll('.sketch-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const sketchFile = btn.dataset.sketch;
-        const sketchDesc = btn.dataset.desc || '';
-        loadSketch(sketchFile, sketchDesc);
-        
+        loadSketch(btn.dataset.sketch, btn.dataset.desc || '');
         document.querySelectorAll('.sketch-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       });
     });
-    
+
     function loadSketch(sketchFile, description) {
-      // Remove existing p5 instance
-      if (currentP5Instance) {
-        currentP5Instance.remove();
-        currentP5Instance = null;
-      }
-      
-      // Remove existing canvas
-      const existingCanvas = document.querySelector('canvas');
-      if (existingCanvas) {
-        existingCanvas.remove();
-      }
-      
-      // Update UI
-      document.getElementById('current-sketch-name').textContent = sketchFile.replace('.js', '').replace(/-/g, ' ');
-      document.getElementById('current-sketch-desc').textContent = description || '';
-      
-      // Load and execute sketch in instance mode
-      fetch(sketchFile)
-        .then(response => response.text())
-        .then(code => {
-          // Clean up global p5 functions
-          if (typeof window.setup !== 'undefined') delete window.setup;
-          if (typeof window.draw !== 'undefined') delete window.draw;
-          if (typeof window.windowResized !== 'undefined') delete window.windowResized;
-          if (typeof window.keyPressed !== 'undefined') delete window.keyPressed;
-          if (typeof window.mousePressed !== 'undefined') delete window.mousePressed;
-          if (typeof window.mouseMoved !== 'undefined') delete window.mouseMoved;
-          if (typeof window.mouseWheel !== 'undefined') delete window.mouseWheel;
-          
-          // Execute the sketch code (defines global functions)
-          eval(code);
-          
-          // Create new p5 instance with the global functions
-          currentP5Instance = new p5((p) => {
-            if (typeof window.setup === 'function') {
-              const originalSetup = window.setup;
-              p.setup = () => {
-                p.createCanvas(p.windowWidth, p.windowHeight);
-                originalSetup();
-              };
-            }
-            if (typeof window.draw === 'function') p.draw = window.draw;
-            if (typeof window.windowResized === 'function') p.windowResized = window.windowResized;
-            if (typeof window.keyPressed === 'function') p.keyPressed = window.keyPressed;
-            if (typeof window.mousePressed === 'function') p.mousePressed = window.mousePressed;
-            if (typeof window.mouseMoved === 'function') p.mouseMoved = window.mouseMoved;
-            if (typeof window.mouseWheel === 'function') p.mouseWheel = window.mouseWheel;
-          }, document.getElementById('sketch-container'));
-        })
-        .catch(err => console.error('Error loading sketch:', err));
+      const rawName = sketchFile.replace('.js', '').replace(/-/g, ' ');
+      const title   = rawName.replace(/\b\w/g, c => c.toUpperCase());
+
+      // Animate header pill out → update → in
+      nameEl.classList.remove('pill-in');
+      nameEl.classList.add('pill-out');
+      setTimeout(() => {
+        nameEl.textContent = title;
+        descEl.textContent = description;
+        nameEl.classList.remove('pill-out');
+        nameEl.classList.add('pill-in');
+      }, 160);
+
+      // Fade the iframe out, swap src, fade back in
+      frame.classList.remove('frame-in');
+      frame.classList.add('frame-out');
+      setTimeout(() => {
+        frame.src = 'sketch-wrapper.html?sketch=' + encodeURIComponent(sketchFile);
+        frame.classList.remove('frame-out');
+        frame.classList.add('frame-in');
+      }, 200);
     }
-    
-    // Load first sketch on page load
-    document.querySelector('[data-sketch="bouncing-balls.js"]').classList.add('active');
-    loadSketch('bouncing-balls.js', document.querySelector('[data-sketch="bouncing-balls.js"]').dataset.desc);
+
+    /* ── Initial load (before intro dismiss — sketch loads silently behind) */
+    const firstBtn = document.querySelector('[data-sketch="bouncing-balls.js"]');
+    firstBtn.classList.add('active');
+    const rawName = firstBtn.dataset.sketch.replace('.js','').replace(/-/g,' ');
+    nameEl.textContent = rawName.replace(/\b\w/g, c => c.toUpperCase());
+    descEl.textContent = firstBtn.dataset.desc;
+    frame.src = 'sketch-wrapper.html?sketch=' + encodeURIComponent(firstBtn.dataset.sketch);
   </script>
 </body>
 

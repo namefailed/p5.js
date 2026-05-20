@@ -70,7 +70,6 @@ function draw() {
 
 function mousePressed() {
   a = random(1, 6);
-  a = random(1, 5);
   b = random(1, 5);
   delta = random(0, TWO_PI);
 }

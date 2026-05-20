@@ -51,8 +51,8 @@ function draw() {
     }
   }
   
-  // Check wall collision
-  if (snake[0].x < 0 || snake[0].x >= width || snake[0].y < 0 || snake[0].y >= height) {
+  // Check wall collision (snake coords are grid-aligned)
+  if (snake[0].x < 0 || snake[0].x + gridSize > width || snake[0].y < 0 || snake[0].y + gridSize > height) {
     gameOver = true;
   }
   
@@ -73,7 +73,6 @@ function draw() {
   }
   
   // Score panel
-  colorMode(RGB);
   fill(0, 0, 0, 150);
   noStroke();
   rect(10, 10, 150, 55, 8);
@@ -83,7 +82,6 @@ function draw() {
   textSize(11);
   text(`High Score: ${highScore}`, 25, 45);
   text('Arrow keys to move', 25, 58);
-  colorMode(HSB);
 }
 
 function moveSnake() {

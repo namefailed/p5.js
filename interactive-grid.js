@@ -69,12 +69,12 @@ function draw() {
   colorMode(RGB);
   fill(0, 0, 0, 150);
   noStroke();
-  rect(10, 10, 160, 45, 8);
+  rect(10, 10, 260, 55, 8);
   fill(200);
   textSize(12);
   text('Interactive Grid', 25, 30);
   textSize(11);
-  text('Click or hover to activate • SPACE to reset', 25, 45);
+  text('Click or hover to activate • SPACE to reset', 25, 47);
   colorMode(HSB);
 }
 

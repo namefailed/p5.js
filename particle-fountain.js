@@ -6,6 +6,7 @@ let hueOffset = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
+  colorMode(HSB);
 }
 
 function draw() {
@@ -82,15 +83,16 @@ class Particle {
   }
   
   display() {
+    let alpha = this.life;
+    let c = color(this.hue, 80, 100);
     noStroke();
-    fill(this.hue, 80, 100, this.life / 255);
+    fill(red(c), green(c), blue(c), alpha);
     push();
     translate(this.pos.x, this.pos.y, this.pos.z);
     sphere(this.size);
     pop();
     
-    // Glow
-    fill(this.hue, 80, 100, (this.life / 255) * 0.3);
+    fill(red(c), green(c), blue(c), alpha * 0.3);
     push();
     translate(this.pos.x, this.pos.y, this.pos.z);
     sphere(this.size * 1.5);

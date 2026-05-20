@@ -1,11 +1,11 @@
 // Pong Clone - classic paddle game
 
 let paddleHeight = 100;
-let ballSpeedX, b
-llSpeedY;
-
-
-
+let paddleWidth = 12;
+let paddleSpeed = 6;
+let ballX, ballY;
+let ballSpeedX, ballSpeedY;
+let leftY, rightY;
 
 let leftScore = 0;
 let rightScore = 0;

@@ -21,7 +21,7 @@ function draw() {
   windOffset = sin(frameCount * 0.02) * 0.15;
   
   // Draw tree
-  drawBranch(len, 10);
+  drawBranch(len);
   
   // Instructions
   resetMatrix();
@@ -36,22 +36,23 @@ function draw() {
   colorMode(HSB);
 }
 
-function drawBranch(len, depth) {
-  stroke(map(depth, 0, 10, 30, 150), 70, 100);
-  strokeWeight(map(depth, 0, 10, 1, 8));
+function drawBranch(len) {
+  let t = map(len, 4, 120, 0, 1);
+  stroke((hueOffset + map(t, 0, 1, 20, 120)) % 360, 70, 100);
+  strokeWeight(map(len, 4, 120, 1, 8));
   
   line(0, 0, 0, -len);
   translate(0, -len);
   
-  if (len > 10) {
+  if (len > 4) {
     push();
     rotate(angle + windOffset);
-    drawBranch(len * 0.7, depth - 1);
+    drawBranch(len * 0.7);
     pop();
     
     push();
     rotate(-angle + windOffset);
-    drawBranch(len * 0.7, depth - 1);
+    drawBranch(len * 0.7);
     pop();
   }
 }

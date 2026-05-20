@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100vw; height: 100vh; overflow: hidden; background: #0a0a0a; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script>
+    // Load p5, then the sketch. Putting p5 here (not in <head>) means the body
+    // is already laid out, so window.innerWidth/innerHeight are correct when p5
+    // reads them for windowWidth/windowHeight.
+    function loadScript(src, cb) {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = cb;
+      document.body.appendChild(s);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const sketchFile = params.get('sketch');
+
+    if (sketchFile) {
+      loadScript('libraries/p5.min.js', () => {
+        loadScript(sketchFile, null);
+      });
+    }
+  </script>
+</body>
+</html>
